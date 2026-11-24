@@ -19,6 +19,10 @@ ENTRY = (
 
 
 def main() -> None:
+    # Gate guard: the sealed scorer only accepts 1-400 UTF-8 characters.
+    # Fail loudly here rather than silently writing an invalid entry.
+    if not 1 <= len(ENTRY) <= 400:
+        raise SystemExit(f"entry is {len(ENTRY)} chars, outside the 1-400 gate")
     os.makedirs("/output", exist_ok=True)
     with open("/output/entry.txt", "w", encoding="utf-8") as f:
         f.write(ENTRY)
